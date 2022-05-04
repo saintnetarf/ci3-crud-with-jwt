@@ -17,8 +17,6 @@ class Auth extends BD_Controller {
         $this->load->model('M_main');
     }
 
-    
-
     public function login_post()
     {
         $u = $this->post('username'); //Username Posted
@@ -34,9 +32,8 @@ class Auth extends BD_Controller {
             $token['username'] = $u;
             $date = new DateTime();
             $token['iat'] = $date->getTimestamp();
-            $token['exp'] = $date->getTimestamp() + 60*60*8760; //To here is to generate token (5 hour = 60 second X 60 minute x 8760 hour = 1 year)
-
-
+            $token['exp'] = $date->getTimestamp() + 60*60*8760; //To here is to generate token (60 second X 60 minute x 8760 hour = 1 year)
+          
             $output['token'] = JWT::encode($token,$kunci ); //This is the output token
             $this->set_response($output, REST_Controller::HTTP_OK); //This is the respon if success
         }
