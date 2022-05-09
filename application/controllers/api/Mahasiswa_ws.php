@@ -9,18 +9,16 @@ class Mahasiswa_ws extends BD_Controller {
         parent::__construct();
         $this->auth();
     }
-	
+
+
     function mahasiswa_get() {
         $id = $this->get('nim');
-        if ($id == '') {
-            $data = $this->db->get('mahasiswa')->result();
-        } else {
-            $this->db->where('nim', $id);
-            $data = $this->db->get('mahasiswa')->result();
+        $data['mahasiswa'] = $this->db->query("SELECT mahasiswa.nim,mahasiswa.nama_mhs,prodi.nama_prodi FROM mahasiswa,prodi WHERE mahasiswa.id_prodi=prodi.id_prodi  order by nim desc")->result();
+        if ($id != '') {
+        $data['mahasiswa'] = $this->db->query("SELECT mahasiswa.nim,mahasiswa.nama_mhs,prodi.nama_prodi FROM mahasiswa,prodi WHERE mahasiswa.nim = '$id' AND mahasiswa.id_prodi=prodi.id_prodi  order by nim desc")->result();
         }
         $this->response($data, 200);
-    }
-
+    }    
 
     function mahasiswa_post() {
         $data = array(
@@ -67,17 +65,7 @@ class Mahasiswa_ws extends BD_Controller {
         }
     }
 
-    function mhs_get() {
-        $id = $this->get('nim');
-        $data['mahasiswa'] = $this->db->query("SELECT mahasiswa.nim,mahasiswa.nama_mhs,prodi.nama_prodi FROM mahasiswa,prodi WHERE mahasiswa.id_prodi=prodi.id_prodi  order by nim desc")->result();
-        if ($id == '') {
-        $data['mahasiswa'] = $this->db->query("SELECT mahasiswa.nim,mahasiswa.nama_mhs,prodi.nama_prodi FROM mahasiswa,prodi WHERE mahasiswa.id_prodi=prodi.id_prodi  order by nim desc")->result();
-        } else {
-         $this->db->where('nim', $id);
-         $data['mahasiswa'] = $this->db->query("SELECT mahasiswa.nim,mahasiswa.nama_mhs,prodi.nama_prodi FROM mahasiswa,prodi WHERE mahasiswa.id_prodi=prodi.id_prodi  order by nim desc")->result();
-        }
-        $this->response($data, 200);
-    }
+
 
 
 
